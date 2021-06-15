@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.search.SearchFragment">
+
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="1dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/purple_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSearchedCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vLine"
+        app:layout_constraintEnd_toStartOf="@+id/vLine"
+        app:layout_constraintTop_toTopOf="@+id/vLine" />
+
+    <TextView
+        android:id="@+id/tvSearchedCountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pages_searched_label"
+        app:layout_constraintBottom_toBottomOf="@+id/vLine"
+        app:layout_constraintEnd_toStartOf="@+id/tvSearchedCount"
+        app:layout_constraintTop_toTopOf="@+id/vLine" />
+
+    <TextView
+        android:id="@+id/tvSearchingCountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/pages_searching_label"
+        app:layout_constraintBottom_toBottomOf="@+id/vLine"
+        app:layout_constraintStart_toEndOf="@+id/vLine"
+        app:layout_constraintTop_toTopOf="@+id/vLine" />
+
+    <TextView
+        android:id="@+id/tvSearchingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/vLine"
+        app:layout_constraintStart_toEndOf="@+id/tvSearchingCountLabel"
+        app:layout_constraintTop_toTopOf="@+id/vLine" />
+
+    <ProgressBar
+        android:id="@+id/pbSearching"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSearchedCountLabel" />
+
+    <Button
+        android:id="@+id/btnPauseSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_pause_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnStopSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_stop_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnPauseSearch" />
+
+    <Button
+        android:id="@+id/btnResumeSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/btn_resume_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnPauseSearch"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPauseSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbSearching" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNewSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/purple_500"
+        android:src="@drawable/new_search_icon"
+        app:tint="@color/white"
+        android:contentDescription="@string/new_search_button_description"
+        app:layout_constraintBottom_toTopOf="@+id/btnStopSearch"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

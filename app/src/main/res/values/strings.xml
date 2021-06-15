@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Search Engine</string>
+    <string name="btnStartText">Start</string>
+    <string name="et_initial_url_label">Website</string>
+    <string name="et_search_string_label">Searching text</string>
+    <string name="et_treads_count_label">Threads count</string>
+    <string name="et_pages_limit_label">Pages limit</string>
+    <string name="incorrect_website_error">Enter correct website address</string>
+    <string name="incorrect_search_text_error">Search text must not be empty</string>
+    <string name="incorrect_threads_count_error">Threads count must be at least 1</string>
+    <string name="incorrect_pages_limit_error">Pages limit must be at least 1</string>
+    <string name="pages_searched_label">Pages searched: </string>
+    <string name="pages_searching_label">Pages searching: </string>
+    <string name="btn_pause_label">Pause</string>
+    <string name="btn_resume_label">Resume</string>
+    <string name="btn_stop_label">Stop</string>
+    <string name="new_search_button_description">new search button</string>
+    <string name="searching_error">there is some error. Try again.</string>
+    <string name="searching_complete">Searching complete.</string>
+</resources>
