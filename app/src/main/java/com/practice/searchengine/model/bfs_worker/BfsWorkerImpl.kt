@@ -182,12 +182,9 @@ class BfsWorkerImpl(
                             isCompleteObservable.onNext(true)
                         }
                         searchTimeEnd = System.currentTimeMillis()
-                        logger.log("SearchViewModel findPagesViaBfs onComplete, calculation time: ${(searchTimeEnd - searchTimeStart) / 1000}")
-                        logger.log("SearchViewModel findPagesViaBfs onComplete, calculation visited pages size: ${visitedPages.size}")
                     }
                 )
         )
-
     }
 
     private fun updateSearchingSubjects(

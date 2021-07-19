@@ -4,40 +4,36 @@ import com.practice.searchengine.model.bfs_worker.BfsWorker
 import com.practice.searchengine.model.bfs_worker.BfsWorkerImpl
 import com.practice.searchengine.model.logger.Log
 import com.practice.searchengine.model.logger.Logger
-import com.practice.searchengine.model.prefs.Prefs
-import com.practice.searchengine.model.prefs.PrefsImpl
 import com.practice.searchengine.model.network.NetworkClient
 import com.practice.searchengine.model.network.SearchNetworkClient
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import com.practice.searchengine.model.prefs.Prefs
+import com.practice.searchengine.model.prefs.PrefsImpl
+import com.practice.searchengine.ui.initial.InitialViewModel
+import com.practice.searchengine.ui.search.SearchViewModel
+import com.practice.searchengine.ui.splash.SplashViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.parameter.parametersOf
+import org.koin.dsl.module
 
+val appModule = module {
+    factory<Log> { Logger.withTag("AppLog") }
 
-@Module
-class AppModule {
+    single<NetworkClient> { SearchNetworkClient() }
 
-    @Provides
-    fun provideLogger(): Log {
-        return Logger.withTag("AppLog")
+    single<Prefs> { PrefsImpl(androidContext()) }
+
+    factory<BfsWorker> { (prefs: Prefs) ->
+        BfsWorkerImpl(
+            get(), get(), prefs.getThreadsCount().toInt(), prefs.getPagesLimit().toInt(),
+            prefs.getSearchText()
+        )
     }
 
-    @Provides
-    @Singleton
-    fun provideNetworkClient(): NetworkClient {
-        return SearchNetworkClient()
-    }
+    viewModel { SplashViewModel(get()) }
 
-    @Provides
-    @Singleton
-    fun providePrefs(): Prefs {
-        return PrefsImpl(App.instance)
-    }
+    viewModel { InitialViewModel(get(), get()) }
 
-    @Provides
-    fun provideBfsWorker(): BfsWorker{
-        val appComponent = App.instance.appComponent
-        val prefs = appComponent.providePrefs()
-        return BfsWorkerImpl(appComponent.provideLogger(), appComponent.provideNetworkClient(),
-            prefs.getThreadsCount().toInt(), prefs.getPagesLimit().toInt(), prefs.getSearchText() )
-    }
+    viewModel { SearchViewModel(get(), get { parametersOf(get<Prefs>())}, get()) }
 }
+

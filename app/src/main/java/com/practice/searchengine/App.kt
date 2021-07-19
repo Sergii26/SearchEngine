@@ -1,22 +1,20 @@
 package com.practice.searchengine
 
-import android.content.Context
 import androidx.multidex.MultiDexApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class App : MultiDexApplication() {
-    lateinit var appComponent: AppComponent
-
-    val appContext: Context
-        get() = this.applicationContext
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-        appComponent = DaggerAppComponent.create()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(appModule)
+        }
     }
 
-    companion object {
-        lateinit var instance: App
-            private set
-    }
 }
