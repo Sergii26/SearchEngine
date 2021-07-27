@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.lifecycle.ViewModelProvider
 import com.practice.searchengine.R
 import com.practice.searchengine.ui.arch.MvvmFragment
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class InitialFragment : MvvmFragment<InitialContract.Host, InitialContract.ViewModel>() {
 
@@ -18,15 +17,10 @@ class InitialFragment : MvvmFragment<InitialContract.Host, InitialContract.ViewM
     private lateinit var etThreadsCount: EditText
     private lateinit var etPagesLimit: EditText
     private lateinit var btnStart: Button
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun createModel(): InitialContract.ViewModel {
-        DaggerInitialFragmentComponent.builder()
-            .initialFragmentModule(InitialFragmentModule())
-            .build()
-            .injectInitialFragment(this)
-        return viewModelFactory.let { ViewModelProvider(this, it).get(InitialViewModel::class.java) }
+        val viewModel: InitialViewModel by viewModel()
+        return viewModel
     }
 
     override fun onCreateView(
@@ -41,7 +35,7 @@ class InitialFragment : MvvmFragment<InitialContract.Host, InitialContract.ViewM
         initViews(view)
         subscribeToModelObservables()
         btnStart.setOnClickListener {
-            model!!.checkValues(
+            model.checkValues(
                 etWebsite.text.toString(),
                 etSearchText.text.toString(),
                 etThreadsCount.text.toString(),
@@ -59,19 +53,19 @@ class InitialFragment : MvvmFragment<InitialContract.Host, InitialContract.ViewM
     }
 
     private fun subscribeToModelObservables(){
-        model!!.getIncorrectWebsiteObservable().observe(viewLifecycleOwner, {
+        model.getIncorrectWebsiteObservable().observe(viewLifecycleOwner, {
             etWebsite.error = getString(it)
         })
-        model!!.getIncorrectSearchTextObservable().observe(viewLifecycleOwner, {
+        model.getIncorrectSearchTextObservable().observe(viewLifecycleOwner, {
             etSearchText.error = getString(it)
         })
-        model!!.getIncorrectThreadsCountObservable().observe(viewLifecycleOwner, {
+        model.getIncorrectThreadsCountObservable().observe(viewLifecycleOwner, {
             etThreadsCount.error = getString(it)
         })
-        model!!.getIncorrectPagesLimitObservable().observe(viewLifecycleOwner, {
+        model.getIncorrectPagesLimitObservable().observe(viewLifecycleOwner, {
             etPagesLimit.error = getString(it)
         })
-        model!!.getIsCheckedValues().observe(viewLifecycleOwner, {
+        model.getIsCheckedValues().observe(viewLifecycleOwner, {
             if(it && hasCallBack()){
                 callBack!!.openSearchFragment()
             }

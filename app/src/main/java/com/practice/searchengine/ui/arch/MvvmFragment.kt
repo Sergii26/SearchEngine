@@ -14,7 +14,7 @@ abstract class MvvmFragment<
     var callBack: Host? = null
         private set
 
-    protected var model: VIEW_MODEL? = null
+    protected lateinit var model: VIEW_MODEL
         private set
 
     fun hasCallBack(): Boolean {

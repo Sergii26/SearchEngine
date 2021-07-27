@@ -9,19 +9,15 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practice.searchengine.R
-import com.practice.searchengine.model.logger.Logger
 import com.practice.searchengine.ui.arch.MvvmFragment
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : MvvmFragment<SearchContract.Host, SearchContract.ViewModel>() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val logger = Logger.withTag("AppLog")
+
     private lateinit var tvSearchedCount: TextView
     private lateinit var tvSearchingCount: TextView
     private lateinit var pbSearch: ProgressBar
@@ -33,12 +29,8 @@ class SearchFragment : MvvmFragment<SearchContract.Host, SearchContract.ViewMode
     private val adapter = SearchListAdapter()
 
     override fun createModel(): SearchContract.ViewModel {
-        DaggerSearchFragmentComponent.builder()
-            .searchFragmentModule(SearchFragmentModule())
-            .build()
-            .injectSearchFragment(this)
-        return viewModelFactory.let { ViewModelProvider(this, it).get(SearchViewModel::class.java) }
-
+        val viewModel: SearchViewModel by viewModel()
+        return viewModel
     }
 
     override fun onCreateView(
@@ -57,47 +49,46 @@ class SearchFragment : MvvmFragment<SearchContract.Host, SearchContract.ViewMode
         rvSearch.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         subscribeToModelObservables()
         btnPause.setOnClickListener {
-            model!!.pauseSearch()
+            model.pauseSearch()
         }
         btnStop.setOnClickListener {
-            model!!.stopSearch()
+            model.stopSearch()
         }
         btnResume.setOnClickListener {
-            model!!.resumeSearch()
+            model.resumeSearch()
         }
         fabNewSearch.setOnClickListener {
             if(hasCallBack()){
                 callBack!!.backToInitialFragment()
             }
         }
-        model!!.startSearch()
+        model.startSearch()
     }
 
     private fun subscribeToModelObservables() {
-        model!!.getSearchedCountObservable().observe(viewLifecycleOwner, {
+        model.getSearchedCountObservable().observe(viewLifecycleOwner, {
             tvSearchedCount.text = it.toString()
         })
-        model!!.getSearchingCountObservable().observe(viewLifecycleOwner, {
+        model.getSearchingCountObservable().observe(viewLifecycleOwner, {
             tvSearchingCount.text = it.toString()
         })
-        model!!.getProgressObservable().observe(viewLifecycleOwner, {
+        model.getProgressObservable().observe(viewLifecycleOwner, {
             pbSearch.progress = it
         })
-        model!!.getResultsObservable().observe(viewLifecycleOwner, {
+        model.getResultsObservable().observe(viewLifecycleOwner, {
             adapter.addItem(it)
         })
-        model!!.getIsErrorObservable().observe(viewLifecycleOwner, {
+        model.getIsErrorObservable().observe(viewLifecycleOwner, {
             if(it){
                 makeToast(R.string.searching_error)
             }
         })
-        model!!.getIsCompleteObservable().observe(viewLifecycleOwner, {
+        model.getIsCompleteObservable().observe(viewLifecycleOwner, {
             if(it){
                 makeToast(R.string.searching_complete)
-                logger.log("SearchFragment onComplete list size: ${adapter.getItemList().size}")
             }
         })
-        model!!.getSearchingStateObservable().observe(viewLifecycleOwner, {
+        model.getSearchingStateObservable().observe(viewLifecycleOwner, {
             when(it) {
                 SearchingStateIndication.STATE_SEARCH -> {
                     btnPause.isEnabled = true
